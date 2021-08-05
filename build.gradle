@@ -1,0 +1,52 @@
+plugins {
+    id("io.micronaut.library") version "1.5.4"
+    id("com.microsoft.azure.azurefunctions") version "1.5.1"
+}
+
+version = "0.1"
+group = "com.example"
+
+repositories {
+    mavenCentral()
+}
+
+micronaut {
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.example.*")
+    }
+}
+
+dependencies {
+    implementation("io.micronaut:micronaut-runtime")
+    implementation("javax.annotation:javax.annotation-api")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    implementation("io.micronaut:micronaut-validation")
+
+    implementation("com.microsoft.azure.functions:azure-functions-java-library")
+
+    implementation("io.micronaut.azure:micronaut-azure-function")
+
+    testImplementation("io.micronaut:micronaut-http-client")
+
+}
+
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("11")
+    targetCompatibility = JavaVersion.toVersion("11")
+}
+
+
+azurefunctions {
+    resourceGroup = "java-functions-group"
+    appName = "demo-azurefunction"
+    pricingTier = "Consumption"
+    region = "westus"
+    runtime {
+      os = "linux"
+    }
+    localDebug = "transport=dt_socket,server=y,suspend=n,address=5005"
+}
+
